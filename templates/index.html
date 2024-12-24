@@ -3,34 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Generation</title>
-    <script>
-        async function generateImage(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const formData = new FormData(event.target);
-            const response = await fetch('/generate', {
-                method: 'POST',
-                body: formData,
-            });
-            const result = await response.text();
-            document.getElementById('result').innerHTML = result; // Display result on the same page
-        }
-    </script>
+    <title>ComfyUI Image Generation</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+    <script src="script.js" defer></script> <!-- Link to external JavaScript -->
 </head>
 <body>
-    <h1>Photo Generation using ComfyUI</h1>
-    <form onsubmit="generateImage(event)">
-        <label for="positive_prompt">Enter Positive Prompt:</label>
-        <input type="text" id="positive_prompt" name="positive_prompt" required>
-        <br>
-        <label for="negative_prompt">Enter Negative Prompt:</label>
-        <input type="text" id="negative_prompt" name="negative_prompt" required>
-        <br>
-        <label for="image_path">Image Path (optional):</label>
-        <input type="text" id="image_path" name="image_path">
-        <br>
-        <button type="submit">Generate Photo</button>
-    </form>
-    <div id="result"></div>
+    <div class="container mt-5">
+        <h1>ComfyUI Image Generation</h1>
+        <form id="generateForm">
+            <button type="submit" class="btn btn-primary">Generate Images</button>
+        </form>
+        <button id="interruptButton" class="btn btn-danger">Interrupt Generation</button>
+        
+        <h2 class="mt-5">Last Generated Image</h2>
+        <div class="text-center">
+            <img id="lastGeneratedImage" src="" class="img-fluid" alt="Last Generated Image" style="width: 768px; height: 768px;">
+        </div>
+        
+        <h2 class="mt-5">Generated Images</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image Name</th>
+                    <th>Preview</th>
+                </tr>
+            </thead>
+            <tbody id="imageTableBody">
+                <!-- Images will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to fetch the last generated image
+        function fetchLastGeneratedImage() {
+            fetch('/get_last_generated_image') 
+                .then(response => response.json())
+                .then(data => {
+                    const lastImage = document.getElementById('lastGeneratedImage');
+                    lastImage.src = `output/${data.image_name}`; 
+                })
+                .catch(error => console.error('Error fetching last generated image:', error));
+        }
+
+        // Call the function to fetch the last generated image on page load
+        window.onload = function() {
+            fetchLastGeneratedImage();
+        };
+
+        // Fetch the list of images when the page loads
+        fetch('/get_images')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('imageTableBody');
+                data.images.forEach(image => {
+                    const row = `<tr>
+                        <td>${image.name}</td>
+                        <td><img src="output/${image.name}" class="img-thumbnail" width="512" height="512"></td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
+
+        document.getElementById('generateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch('/generate_image', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.image) {
+                    document.getElementById('lastGeneratedImage').src = 'data:image/png;base64,' + data.image;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('interruptButton').addEventListener('click', function() {
+            fetch('/interrupt_generation', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Generation interrupted');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

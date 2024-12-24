@@ -354,6 +354,9 @@ def prompt_to_image(workflow, positve_prompt, negative_prompt='', save_previews=
         The workflow configuration should include at least one 'KSampler' class type for randomness and input nodes
         for positive and negative prompts. This function dynamically updates these nodes based on the provided prompts.
     """
+    print(f"Workflow being sent: {workflow}")
+    print(f"Positive prompt: {positve_prompt}")
+    print(f"Negative prompt: {negative_prompt}")
     prompt = json.loads(workflow)
     id_to_class_type = {id: details['class_type'] for id, details in prompt.items()}
     k_sampler = [key for key, value in id_to_class_type.items() if value == 'KSampler'][0]
@@ -365,7 +368,7 @@ def prompt_to_image(workflow, positve_prompt, negative_prompt='', save_previews=
         negative_input_id = prompt.get(k_sampler)['inputs']['negative'][0]
         prompt.get(negative_input_id)['inputs']['text'] = negative_prompt
 
-    generate_image_by_prompt(prompt, './output/blog/cyborg', save_previews)
+    generate_image_by_prompt(prompt, './output/generated_image.png', './output/generated_image.png', save_previews)
 
 def prompt_image_to_image(workflow, input_path, positve_prompt, negative_prompt='', save_previews=False):
     """
@@ -390,6 +393,9 @@ def prompt_image_to_image(workflow, input_path, positve_prompt, negative_prompt=
         The workflow should include a 'KSampler' for randomness, input nodes for positive and negative prompts,
         and a 'LoadImage' node for the input image. This function updates these nodes based on provided arguments.
     """
+    print(f"Workflow being sent: {workflow}")
+    print(f"Positive prompt: {positve_prompt}")
+    print(f"Negative prompt: {negative_prompt}")
     prompt = json.loads(workflow)
     id_to_class_type = {id: details['class_type'] for id, details in prompt.items()}
     k_sampler = [key for key, value in id_to_class_type.items() if value == 'KSampler'][0]

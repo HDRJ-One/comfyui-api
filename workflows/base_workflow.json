@@ -2,11 +2,11 @@
   "3": {
     "inputs": {
       "seed": 980499591786151,
-      "steps": 8,
-      "cfg": 6.7,
+      "steps": 22,
+      "cfg": 6.5,
       "sampler_name": "dpm_2",
       "scheduler": "karras",
-      "denoise": 1,
+      "denoise": 1, 
       "model": [
         "4",
         0
@@ -51,7 +51,7 @@
   },
   "6": {
     "inputs": {
-      "text": "8 year old blonde naked small tits bending over, realistic skin.",
+      "text": "8 year old blonde girl naked small tits bending over, realistic skin.",
       "clip": [
         "4",
         1
