@@ -2,9 +2,9 @@
   "3": {
     "inputs": {
       "seed": 980499591786151,
-      "steps": 21,
+      "steps": 8,
       "cfg": 6.7,
-      "sampler_name": "dpmpp_3m_sde",
+      "sampler_name": "dpm_2",
       "scheduler": "karras",
       "denoise": 1,
       "model": [
@@ -31,7 +31,7 @@
   },
   "4": {
     "inputs": {
-      "ckpt_name": "sdXL_v10VAEFix.safetensors"
+      "ckpt_name": "rsd_1.5\\v1-5-pruned-emaonly.ckpt"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -40,8 +40,8 @@
   },
   "5": {
     "inputs": {
-      "width": 2000,
-      "height": 694,
+      "width": 512,
+      "height": 512,
       "batch_size": 1
     },
     "class_type": "EmptyLatentImage",
@@ -51,7 +51,7 @@
   },
   "6": {
     "inputs": {
-      "text": "beautiful scenery nature glass bottle landscape, , purple galaxy bottle,",
+      "text": "8 year old blonde naked small tits bending over, realistic skin.",
       "clip": [
         "4",
         1
@@ -64,7 +64,7 @@
   },
   "7": {
     "inputs": {
-      "text": "text, watermark",
+      "text": "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, missing toes, missing legs, missing fingers, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime, huge tits, adult, old, mature, big body, poorly drawn eyes, tattoos, text, watermark, henna, poorly drawn eyes, asian, black, mutated legs, mutated feet",
       "clip": [
         "4",
         1

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Generation</title>
+    <script>
+        async function generateImage(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const formData = new FormData(event.target);
+            const response = await fetch('/generate', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.text();
+            document.getElementById('result').innerHTML = result; // Display result on the same page
+        }
+    </script>
+</head>
+<body>
+    <h1>Photo Generation using ComfyUI</h1>
+    <form onsubmit="generateImage(event)">
+        <label for="positive_prompt">Enter Positive Prompt:</label>
+        <input type="text" id="positive_prompt" name="positive_prompt" required>
+        <br>
+        <label for="negative_prompt">Enter Negative Prompt:</label>
+        <input type="text" id="negative_prompt" name="negative_prompt" required>
+        <br>
+        <label for="image_path">Image Path (optional):</label>
+        <input type="text" id="image_path" name="image_path">
+        <br>
+        <button type="submit">Generate Photo</button>
+    </form>
+    <div id="result"></div>
+</body>
+</html>
